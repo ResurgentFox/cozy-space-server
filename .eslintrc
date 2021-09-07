@@ -6,7 +6,8 @@
     "mocha": false
   },
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 8
   },
   "ecmaFeatures": {
     "arrowFunctions": true,
