@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb'
 import * as dotenv from 'dotenv'
 import express from 'express'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -10,6 +11,7 @@ const client = new MongoClient(uri)
 const port = process.env.PORT
 
 const app = express()
+app.use(cors({ origin: process.env.FRONTEND_DOMAIN}))
 app.get('/get_posts', async (req, res) => {
   const collection = client.db().collection('Posts')
   const allPosts = await collection.find().toArray()
