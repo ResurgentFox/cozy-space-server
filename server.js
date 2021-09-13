@@ -6,16 +6,15 @@ import cors from 'cors'
 dotenv.config()
 
 const uri = process.env.DB_CONNECTION_STRING
-console.log(uri)
 const client = new MongoClient(uri)
 const port = process.env.PORT
 
 const app = express()
-app.use(cors({ origin: process.env.FRONTEND_DOMAIN}))
+app.use(cors({ origin: process.env.FRONTEND_DOMAIN }))
 app.get('/get_posts', async (req, res) => {
   const collection = client.db().collection('Posts')
   const allPosts = await collection.find().toArray()
-  res.json(allPosts)
+  res.json(allPosts.sort((a, b) => b.timestamp - a.timestamp))
 })
 
 app.get('/send_post', async (req, res) => {
