@@ -44,8 +44,8 @@ app.use((req, res) => {
 })
 
 client.connect(() => {
-  app.listen(port, '127.0.0.1')
-  console.log('Server is running')
+  app.listen(port, '0.0.0.0')
+  console.log(`Server is running on port ${port}`)
 })
 
 app.on('close', () => {
