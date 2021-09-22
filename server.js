@@ -7,7 +7,7 @@ import WebSocket from 'ws'
 dotenv.config()
 
 const uri = process.env.DB_CONNECTION_STRING
-const client = new MongoClient(uri, { useNewUrlParser: true })
+const client = new MongoClient(uri)
 const port = process.env.PORT
 
 const app = express()
@@ -28,17 +28,12 @@ app.get('/send_post', async (req, res) => {
     timestamp: Date.now(),
   }
   const collection = client.db().collection('Posts')
-  let newPost = {}
-  try {
-    const { insertedId } = await collection.insertOne(post)
-    newPost = {
-      _id: insertedId,
-      name: post.name,
-      text: post.text,
-      timestamp: post.timestamp
-    }
-  } catch (error) {
-    console.log(error)
+  const { insertedId } = await collection.insertOne(post)
+  const newPost = {
+    _id: insertedId,
+    name: post.name,
+    text: post.text,
+    timestamp: post.timestamp
   }
   wsServer.clients.forEach(ws => ws.send(JSON.stringify(newPost)))
   res.send()
