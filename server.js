@@ -11,7 +11,7 @@ const client = new MongoClient(uri)
 const port = process.env.PORT
 
 const app = express()
-const wsServer = new WebSocket.Server({ port })
+let wsServer = new WebSocket.Server({ port: 3005 })
 
 app.use(cors({ origin: process.env.FRONTEND_DOMAIN }))
 
@@ -44,7 +44,8 @@ app.use((req, res) => {
 })
 
 client.connect(() => {
-  app.listen(port, '0.0.0.0')
+  const server = app.listen(port, '0.0.0.0')
+  wsServer = new WebSocket.Server({ server })
   console.log(`Server is running on port ${port}`)
 })
 
