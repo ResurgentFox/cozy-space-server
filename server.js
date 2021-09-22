@@ -11,7 +11,7 @@ const client = new MongoClient(uri)
 const port = process.env.PORT
 
 const app = express()
-const wsServer = new WebSocket.Server({ port: 3005 })
+const wsServer = new WebSocket.Server({ port })
 
 app.use(cors({ origin: process.env.FRONTEND_DOMAIN }))
 
