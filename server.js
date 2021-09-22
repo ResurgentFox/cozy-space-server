@@ -28,9 +28,10 @@ app.get('/send_post', async (req, res) => {
     timestamp: Date.now(),
   }
   const collection = client.db().collection('Posts')
+  let newPost = {}
   try {
     const { insertedId } = await collection.insertOne(post)
-    const newPost = {
+    newPost = {
       _id: insertedId,
       name: post.name,
       text: post.text,
