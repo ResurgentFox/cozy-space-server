@@ -2,8 +2,8 @@ import { MongoClient } from 'mongodb'
 import * as dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
-import * as WebSocket from 'ws'
-import { setWsHeartbeat } from 'ws-heartbeat/server'
+import { WebSocketServer } from 'ws'
+import { setWsHeartbeat } from 'ws-heartbeat/server.js'
 
 dotenv.config()
 
@@ -12,13 +12,7 @@ const client = new MongoClient(uri)
 const port = process.env.PORT
 
 const app = express()
-let wsServer = new WebSocket.Server({ port: 3005 })
-
-setWsHeartbeat(wsServer, (ws, data, flag) => {
-  if (data === '{"kind":"ping"}') {
-      ws.send('{"kind":"pong"}')
-  }
-}, 60000)
+let wsServer = new WebSocketServer({ port: 3005 })
 
 app.use(cors({ origin: process.env.FRONTEND_DOMAIN }))
 
@@ -52,7 +46,13 @@ app.use((req, res) => {
 
 client.connect(() => {
   const server = app.listen(port, '0.0.0.0')
-  wsServer = new WebSocket.Server({ server })
+  wsServer = new WebSocketServer({ server })
+  setWsHeartbeat(wsServer, (ws, data) => {
+    console.log(data.toString())
+    if (data.toString() === '{"kind":"ping"}') {
+        ws.send('{"kind":"pong"}')
+    }
+  }, 60000)
   console.log(`Server is running on port ${port}`)
 })
 
