@@ -52,7 +52,7 @@ app.get('/send_post', async (req, res) => {
 
   let ownerChatId = await pstor.getItem('tg_chat_id')
   if (ownerChatId) {
-    tgBot.sendMessage(ownerChatId, tg_report(newPost), { parse_mode: 'MarkdownV2' })
+    tgBot.sendMessage(ownerChatId, tg_report(newPost), { parse_mode: 'Markdown' })
   }
 })
 
