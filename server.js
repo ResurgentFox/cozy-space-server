@@ -8,8 +8,8 @@ import * as TelegramBot from 'node-telegram-bot-api'
 import nodepersist from 'node-persist'
 
 dotenv.config()
-
-const pstor = new nodepersist.LocalStorage()
+const LocalStorage = nodepersist.LocalStorage
+const pstor = new LocalStorage()
 await pstor.init()
 
 const uri = process.env.DB_CONNECTION_STRING
