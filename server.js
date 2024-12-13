@@ -5,11 +5,10 @@ import cors from 'cors'
 import { WebSocketServer } from 'ws'
 import { setWsHeartbeat } from 'ws-heartbeat/server.js'
 import * as TelegramBot from 'node-telegram-bot-api'
-import nodepersist from 'node-persist'
+import * as NodePersist from 'node-persist'
 
 dotenv.config()
-const LocalStorage = nodepersist.LocalStorage
-const pstor = new LocalStorage()
+const pstor = new NodePersist.LocalStorage()
 await pstor.init()
 
 const uri = process.env.DB_CONNECTION_STRING
